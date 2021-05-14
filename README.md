@@ -1,2 +1,2 @@
 # SQLMaker
-GUI Application
+GUI Application with the minimun required functions
