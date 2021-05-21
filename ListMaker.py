@@ -3,6 +3,7 @@ import sqlite3 as sql3
 import signal
 import sys
 import setup
+import pandas as pd
 
 class Frame(tk.Frame):
     def __init__(self, master=None):
@@ -12,6 +13,8 @@ class Frame(tk.Frame):
         self.cur = self.conn.cursor()
         self.cur.execute("select * from English")
         tables=self.cur.fetchall()
+        pd.set_option('display.max_rows', 1000)
+        tables=pd.DataFrame(tables)
 
         self.master.title("ListMaker")
         self.width=900
@@ -21,9 +24,11 @@ class Frame(tk.Frame):
     def create_widgets(self,tables):
         entry=tk.Entry
         button=tk.Button
+        
         self.text1 = tk.StringVar()
         self.text1.set(f'result:{tables}')
         self.label1 = tk.Label(textvariable=self.text1)
+        self.label1 = tk.Scrollbar(self.label1, orient=tk.VERTICAL)
         self.label1.grid(row=1, column=0, columnspan=10, padx=5, pady=5,sticky=tk.W+tk.N )
         self.entry1 = entry(width=15)
         self.entry1.grid(row=0, column=0, columnspan=2, padx=5, pady=5,sticky=tk.W)
@@ -48,6 +53,7 @@ class Frame(tk.Frame):
             self.conn.commit()
             self.cur.execute("select * from English")
             tables=self.cur.fetchall()
+            tables=pd.DataFrame(tables)
             return f'{sentence} is inserted\n{tables}'
 
         except sql3.Error as e:
