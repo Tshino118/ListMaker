@@ -1,4 +1,4 @@
-# SQLMaker
+# ListMaker
 GUI Application with the minimun required functions
 
 package
